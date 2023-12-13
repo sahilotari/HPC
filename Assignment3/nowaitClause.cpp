@@ -10,6 +10,7 @@ void print(int i){
     printf("Value %d\n", i);
 }
 int main(){
+omp_set_num_threads(4);
 #pragma omp parallel
     {
 #pragma omp for nowait

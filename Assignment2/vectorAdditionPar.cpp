@@ -3,22 +3,22 @@
 #include <stdio.h>
 
 int main() {
-    int N = 200;
-    int A[200];
+    int N = 100;
+    int A[N];
     for (int i = 0; i < N; i++)
         A[i] = 10;
 
-    int B[200];
+    int B[N];
     for (int i = 0; i < N; i++)
         B[i] = 20;
-
-    int C[200] = {0};
+    omp_set_num_threads(100);
+    int C[N] = {0};
     double startTime = omp_get_wtime();
     #pragma omp parallel for reduction(+ : C)
-    for (int i = 0; i < N; i++) {
-        C[i] = A[i] + B[i];
-        printf("Index is %d Thread is %d\n", i, omp_get_thread_num());
-    }
+    // for (int i = 0; i < N; i++) {
+    //     C[i] = A[i] + B[i];
+    //     printf("Index is %d Thread is %d\n", i, omp_get_thread_num());
+    // }
 
     for (int i = 0; i < N; i++) {
         printf("%d ", C[i]);

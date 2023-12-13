@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 1000
+#define N 3000
+
 void add(int **a, int **b, int **c){
 #pragma omp parallel for
     for (int i = 0; i < N; i++){
@@ -28,6 +29,7 @@ void displayMatrix(int **a){
 }
 
 int main(){
+    omp_set_num_threads(100);
     int **a = (int **)malloc(sizeof(int *) * N);
     int **b = (int **)malloc(sizeof(int *) * N);
     int **c = (int **)malloc(sizeof(int *) * N);

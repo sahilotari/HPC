@@ -1,7 +1,8 @@
 #include <omp.h>
 #include <stdio.h>
 #include <time.h>
-#define n 100000
+#define n 1000
+
 void sort(int nums[]){
     int i, j;
     for (i = 0; i < n; i++)
@@ -35,6 +36,7 @@ void sort_des(int nums[]){
 
 int main()
 {
+    omp_set_num_threads(8);
     int vec1[n], vec2[n];
     for (int i = 0; i < n; i++)
     {

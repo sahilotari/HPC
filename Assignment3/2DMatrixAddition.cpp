@@ -1,50 +1,52 @@
-#include <omp.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#define N 2000
-void add(int **a, int **b, int **c){
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            c[i][j] = a[i][j] + b[i][j];
+#include<stdio.h>
+#include<omp.h>
+#include<time.h>
+
+#define n 200
+#define num_threads 4
+
+int main() {
+    clock_t start=clock();
+    printf("The size of matrix: %d\n",n);
+
+    int mat[n][n];
+    int vec[n];
+    int res[n];
+
+    printf("The elements of the matrix:\n");
+    int c = 1;
+    for (int i = 0; i<n; i++) {
+        for (int j = 0; j<n; j++) {
+            mat[i][j]=c++;
         }
     }
-}
-void input(int **a, int num){
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            a[i][j] = num;
+
+    printf("The elements of the vector:\n");
+    for (int i = 0; i<n; i++) {
+        vec[i]=1;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i<n; i++) {
+        res[i] = 0;
+        for (int j = 0; j<n; j++) {
+            res[i] += mat[i][j] * vec[j];
         }
     }
-}
-void display(int **a)
-{
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            printf("%d ", a[i][j]);
-        }
-        printf("\n");
+
+    printf("Result vector:\n");
+    for (int i = 0; i<n; i++) {
+        printf("%d ", res[i]);
     }
-}
-int main()
-{
-    int **a = (int **)malloc(sizeof(int *) * N);
-    int **b = (int **)malloc(sizeof(int *) * N);
-    int **c = (int **)malloc(sizeof(int *) * N);
-    for (int i = 0; i < N; i++)
-    {
-        a[i] = (int *)malloc(sizeof(int) * N);
-        b[i] = (int *)malloc(sizeof(int) * N);
-        c[i] = (int *)malloc(sizeof(int) * N);
-    }
-    input(a, 1);
-    input(b, 1);
-    double startTime = omp_get_wtime();
-    add(a, b, c);
-    double endTime = omp_get_wtime();
-    
-    
-    printf("\nTime taken (seq): %f\n", endTime - startTime);
+    printf("\n");
+    clock_t end = clock();
+
+    double t=(double)(end-start)/CLOCKS_PER_SEC;
+
+    printf("Size of Vector: %d\n",n);
+    printf("Number of threads: %d\n",num_threads);
+    printf("Time taken = %f seconds.\n", t);
+    printf("Speedup = %f\n", 0.021/t);
+
+    return 0;
 }

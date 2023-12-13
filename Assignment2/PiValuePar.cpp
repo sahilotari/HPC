@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define N 100000
+#define N 10000000
 
 int main() {
     int i, num_inside = 0;
     double x, y;
-
+    omp_set_num_threads(100);
     // Set the seed for random number generation
     srand(52525);
     double startTime = omp_get_wtime();
